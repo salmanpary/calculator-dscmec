@@ -1,0 +1,167 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(Calculator());
+}
+
+class Calculator extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'calculator-dscmec',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: Calculatordsc(),
+    );
+  }
+}
+
+class Calculatordsc extends StatefulWidget {
+  @override
+  _CalculatordscState createState() => _CalculatordscState();
+}
+
+class _CalculatordscState extends State<Calculatordsc> {
+  Widget buildbutton(String buttontext,double buttonheight,Color buttoncolor){
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.1*buttonheight,
+      color: buttoncolor,
+      child: TextButton(
+
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.all(16.0),
+          side: BorderSide(
+            color: Colors.white,
+            width: 1,
+            style: BorderStyle.solid,
+          ),
+        ),
+        onPressed: () {},
+        child: Text(
+          buttontext,
+          style: TextStyle(fontSize: 30.0,color: Colors.white),
+        ),
+      ),
+    );
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("simple calculator"),
+      ),
+      body: Column(
+        children: <Widget>[
+          Container(
+            alignment: Alignment.centerRight,
+            padding: EdgeInsets.fromLTRB(10, 20, 20, 0),
+            child: Text(
+              "0",
+              style: TextStyle(fontSize: 38.0),
+            ),
+          ),
+          Container(
+            alignment: Alignment.centerRight,
+            padding: EdgeInsets.fromLTRB(10, 30, 20, 0),
+            child: Text(
+              "0",
+              style: TextStyle(fontSize: 48.0),
+            ),
+          ),
+          Expanded(
+            child: Divider(),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                width: MediaQuery.of(context).size.width * 0.75,
+                child: Table(
+                  children: [
+                    TableRow(
+                      children: [
+                        buildbutton("C", 1, Colors.redAccent),
+                        buildbutton("⌫", 1, Colors.blue),
+                        buildbutton("÷", 1, Colors.blue),
+
+                      ],
+                    ),
+
+                    TableRow(
+                      children: [
+                        buildbutton("7", 1, Colors.black54),
+                        buildbutton("8", 1, Colors.black54),
+                        buildbutton("9", 1, Colors.black54),
+
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        buildbutton("4", 1, Colors.black54),
+                        buildbutton("5", 1, Colors.black54),
+                        buildbutton("6", 1, Colors.black54),
+
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        buildbutton("1", 1, Colors.black54),
+                        buildbutton("2", 1, Colors.black54),
+                        buildbutton("3", 1, Colors.black54),
+
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        buildbutton(".", 1, Colors.black54),
+                        buildbutton("0", 1, Colors.black54),
+                        buildbutton("00", 1, Colors.black54),
+
+                      ],
+                    ),
+
+                  ],
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width*0.25,
+                child: Table(
+                  children: [
+                    TableRow(
+                      children: [
+                        buildbutton("×", 1, Colors.blue),
+                      ],
+
+
+                    ),
+                    TableRow(
+                      children: [
+                        buildbutton("-", 1, Colors.blue),
+                      ],
+
+
+                    ),
+                    TableRow(
+                      children: [
+                        buildbutton("+", 1, Colors.blue),
+                      ],
+
+
+                    ),
+                    TableRow(
+                      children: [
+                        buildbutton("=", 2, Colors.redAccent),
+                      ],
+
+
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
