@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:math_expressions/math_expressions.dart';
 void main() {
   runApp(Calculator());
 }
@@ -22,12 +22,64 @@ class Calculatordsc extends StatefulWidget {
 }
 
 class _CalculatordscState extends State<Calculatordsc> {
-  Widget buildbutton(String buttontext,double buttonheight,Color buttoncolor){
+  String equation = "0";
+  String result = "0";
+  String expression = "";
+  double equationfontsize = 38.0;
+  double resultfontsize = 48.0;
+
+  buttonpress(String buttontext) {
+    setState(() {
+      if (buttontext == "C") {
+        equation="0";
+        result="0";
+
+      } else if (buttontext == "⌫") {
+        equation=equation.substring(0,equation.length-1);
+        if(equation==""){
+          equation="0";
+        }
+
+
+      } else if (buttontext == "=") {
+        expression=equation;
+        expression=expression.replaceAll('×', '*');
+        expression=expression.replaceAll('÷', '/');
+        try{
+          Parser p= Parser();
+          Expression exp=p.parse(expression);
+          ContextModel cm=ContextModel();
+          result='${exp.evaluate(EvaluationType.REAL, cm)}';
+
+        }
+        catch(e) {
+          result="error";
+        }
+        }
+
+       else {
+        if (equation == "0") {
+          equation = buttontext;
+        } else {
+          equation = equation + buttontext;
+        }
+      }
+    });
+  }
+
+  Widget buildbutton(
+      String buttontext, double buttonheight, Color buttoncolor) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.1*buttonheight,
+      height: MediaQuery.of(context).size.height * 0.1 * buttonheight,
       color: buttoncolor,
       child: TextButton(
-
+        onPressed: () {
+          return buttonpress(buttontext);
+        },
+          child: Text(
+            buttontext,
+            style: TextStyle(fontSize: 30.0, color: Colors.white),
+          ),
         style: TextButton.styleFrom(
           padding: EdgeInsets.all(16.0),
           side: BorderSide(
@@ -36,14 +88,12 @@ class _CalculatordscState extends State<Calculatordsc> {
             style: BorderStyle.solid,
           ),
         ),
-        onPressed: () {},
-        child: Text(
-          buttontext,
-          style: TextStyle(fontSize: 30.0,color: Colors.white),
-        ),
+
+
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,16 +106,16 @@ class _CalculatordscState extends State<Calculatordsc> {
             alignment: Alignment.centerRight,
             padding: EdgeInsets.fromLTRB(10, 20, 20, 0),
             child: Text(
-              "0",
-              style: TextStyle(fontSize: 38.0),
+              equation,
+              style: TextStyle(fontSize: equationfontsize),
             ),
           ),
           Container(
             alignment: Alignment.centerRight,
             padding: EdgeInsets.fromLTRB(10, 30, 20, 0),
             child: Text(
-              "0",
-              style: TextStyle(fontSize: 48.0),
+              result,
+              style: TextStyle(fontSize: resultfontsize),
             ),
           ),
           Expanded(
@@ -83,16 +133,13 @@ class _CalculatordscState extends State<Calculatordsc> {
                         buildbutton("C", 1, Colors.redAccent),
                         buildbutton("⌫", 1, Colors.blue),
                         buildbutton("÷", 1, Colors.blue),
-
                       ],
                     ),
-
                     TableRow(
                       children: [
                         buildbutton("7", 1, Colors.black54),
                         buildbutton("8", 1, Colors.black54),
                         buildbutton("9", 1, Colors.black54),
-
                       ],
                     ),
                     TableRow(
@@ -100,7 +147,6 @@ class _CalculatordscState extends State<Calculatordsc> {
                         buildbutton("4", 1, Colors.black54),
                         buildbutton("5", 1, Colors.black54),
                         buildbutton("6", 1, Colors.black54),
-
                       ],
                     ),
                     TableRow(
@@ -108,7 +154,6 @@ class _CalculatordscState extends State<Calculatordsc> {
                         buildbutton("1", 1, Colors.black54),
                         buildbutton("2", 1, Colors.black54),
                         buildbutton("3", 1, Colors.black54),
-
                       ],
                     ),
                     TableRow(
@@ -116,44 +161,34 @@ class _CalculatordscState extends State<Calculatordsc> {
                         buildbutton(".", 1, Colors.black54),
                         buildbutton("0", 1, Colors.black54),
                         buildbutton("00", 1, Colors.black54),
-
                       ],
                     ),
-
                   ],
                 ),
               ),
               Container(
-                width: MediaQuery.of(context).size.width*0.25,
+                width: MediaQuery.of(context).size.width * 0.25,
                 child: Table(
                   children: [
                     TableRow(
                       children: [
                         buildbutton("×", 1, Colors.blue),
                       ],
-
-
                     ),
                     TableRow(
                       children: [
                         buildbutton("-", 1, Colors.blue),
                       ],
-
-
                     ),
                     TableRow(
                       children: [
                         buildbutton("+", 1, Colors.blue),
                       ],
-
-
                     ),
                     TableRow(
                       children: [
                         buildbutton("=", 2, Colors.redAccent),
                       ],
-
-
                     ),
                   ],
                 ),
